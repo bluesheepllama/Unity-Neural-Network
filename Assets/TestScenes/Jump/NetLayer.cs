@@ -19,6 +19,8 @@ public class NetLayer : MonoBehaviour {
 
 	public Player player; 
 
+	public Text distanceText;
+
 	// Use this for initialization
 	void Start () {
 		//Initialize the network 
@@ -31,7 +33,10 @@ public class NetLayer : MonoBehaviour {
 		//Let the network decide if the player should jump
 		if (trained) {
 			double result = compute (new double[]{ player.distanceInPercent, player.canJump });
+			
 			if (result > 0.5) {
+				distanceText.text = result.ToString();
+				Debug.Log(result);
 				player.jump (); 
 			}
 		}

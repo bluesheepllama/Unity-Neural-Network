@@ -7,7 +7,7 @@ using NeuralNetwork;
 public class Player : MonoBehaviour {
 	public GameObject currentGroundTile;
 	public GameObject restartText; 
-
+	
 	//This is the distance between the player and the end of the current staying tile / platform
 	public double distanceInPercent;
 	public float speed;
@@ -25,6 +25,8 @@ public class Player : MonoBehaviour {
 	private bool die = false;
 	private float deathTimer = 0;
 	public float timeToDie = 5;
+	public bool isPlayer = false;
+
 	public void Start(){
 		canJump = 1; 
 		foreach(GameObject go in enableList)
@@ -42,7 +44,8 @@ public class Player : MonoBehaviour {
 		//Move the parent (Camera + player)
 		this.transform.parent.position += Vector3.right*3F * Time.deltaTime *speed; 
 		if (Input.GetKeyDown (KeyCode.Space)) {
-			jump (); 
+			if(isPlayer || !NetLayer.trained)
+				jump (); 
 		} else {
 			//Adding a new dataset
 			if (countedTime >  timeBetweenDatasets && !NetLayer.trained) {
@@ -97,7 +100,9 @@ public class Player : MonoBehaviour {
 	public void jump(){
 		if (canJump == 1) {
 			//Send dataset to the net 
-			GameObject.Find("Network").GetComponent<NetLayer>().Train(1, 1);
+			if(!isPlayer) { 
+				GameObject.Find("Network").GetComponent<NetLayer>().Train(1, 1);
+				}
 			GameObject exp = Instantiate(explosion, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
 			Destroy(exp,1);
 			//Jump
