@@ -40,7 +40,7 @@ public class LevelGeneration : MonoBehaviour
         GameObject newPlatform = Instantiate(platform, new Vector3(platform.transform.position.x +20, randomY, platform.transform.position.z), Quaternion.identity);
         newPlatform.transform.SetParent(transform);
         platform = newPlatform;
-        Debug.Log("Generated Platform");
+        //Debug.Log("Generated Platform");
 
     }
 
@@ -52,7 +52,7 @@ public class LevelGeneration : MonoBehaviour
         newBkg.transform.SetParent(transform);
 
         background = newBkg;
-        Debug.Log("Generated Background");
+        //Debug.Log("Generated Background");
 
     }
 

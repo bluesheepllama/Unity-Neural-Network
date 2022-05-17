@@ -16,6 +16,7 @@ public class NetLayer : MonoBehaviour {
 
 	private int collectedDatasets = 0;
 	private const int maxNumberOfDatasets = 60; 
+	public CsvReadWrite csv;
 
 	public Player player; 
 
@@ -36,7 +37,7 @@ public class NetLayer : MonoBehaviour {
 			
 			if (result > 0.5) {
 				distanceText.text = result.ToString();
-				Debug.Log(result);
+				//Debug.Log(result);
 				player.jump (); 
 			}
 		}
@@ -47,11 +48,14 @@ public class NetLayer : MonoBehaviour {
 		double[] C = {player.distanceInPercent, canJump};
 		double[] v = {jumped};
 		dataSets.Add(new DataSet(C, v));
-
+		//this is where to pass in values for output
+		csv.Save(C);
 		collectedDatasets++;
 		if (!trained && collectedDatasets == maxNumberOfDatasets) {
 			print ("Start training of the network."); 
 			TrainNetwork();
+			//IsTrained();
+            csv.addSingleRow = true;
 		}
 	}
 
@@ -61,10 +65,16 @@ public class NetLayer : MonoBehaviour {
 		return result[0];
 	}
 
+	private void IsTrained()
+    {
+		csv.AddSingleRown();
+    }
+
 	public static void TrainNetwork()
 	{
 		net.Train(dataSets, MinimumError);
 		trained = true;
 		print ("Trained!"); 
+		Debug.Log("trained");
 	}
 }
