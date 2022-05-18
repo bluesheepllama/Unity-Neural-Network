@@ -48,7 +48,7 @@ public class LevelGeneration : MonoBehaviour
     {
         //TODO: get offset perfect
             // make make the chunck higher and lower in the editor
-        GameObject newBkg = Instantiate(background, new Vector3(background.transform.position.x +60, background.transform.position.y, background.transform.position.z), Quaternion.identity);
+        GameObject newBkg = Instantiate(background, new Vector3(background.transform.position.x +120, background.transform.position.y, background.transform.position.z), Quaternion.identity);
         newBkg.transform.SetParent(transform);
 
         background = newBkg;

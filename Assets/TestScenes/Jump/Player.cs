@@ -6,8 +6,8 @@ using NeuralNetwork;
 
 public class Player : MonoBehaviour {
 	public GameObject currentGroundTile;
-	public GameObject restartText; 
-	
+	public GameObject restartText;
+	public UIPauseMenu uiPauseMenu;
 	//This is the distance between the player and the end of the current staying tile / platform
 	public double distanceInPercent;
 	public float speed;
@@ -92,7 +92,8 @@ public class Player : MonoBehaviour {
 		if (deathTimer >= timeToDie)
 		{
 			restartText.SetActive(true);
-			Time.timeScale = 0;
+			//Time.timeScale = 0;
+			uiPauseMenu.Die();
 		}
 	}
 
@@ -103,7 +104,7 @@ public class Player : MonoBehaviour {
 			if(!isPlayer) { 
 				GameObject.Find("Network").GetComponent<NetLayer>().Train(1, 1);
 				}
-			GameObject exp = Instantiate(explosion, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
+			GameObject exp = Instantiate(explosion, new Vector3(transform.position.x, transform.position.y-1.5f, transform.position.z), Quaternion.identity);
 			Destroy(exp,1);
 			//Jump
 			this.gameObject.GetComponent<Rigidbody> ().AddForce (Vector3.up* jumpHeight); 

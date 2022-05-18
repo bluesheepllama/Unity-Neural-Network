@@ -27,18 +27,32 @@ public class NetLayer : MonoBehaviour {
 		//Initialize the network 
 		net = new NeuralNet(2, 3, 1);
 		dataSets = new List<DataSet>();
+		trained = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		//Let the network decide if the player should jump
 		if (trained) {
-			double result = compute (new double[]{ player.distanceInPercent, player.canJump });
-			
+			double result = compute(new double[] { player.distanceInPercent, player.canJump }) ;
+			//csv.SaveDouble(result, "Result: ");
+
 			if (result > 0.5) {
+				csv.SaveDouble(result,"Result: ",2);				
 				distanceText.text = result.ToString();
 				//Debug.Log(result);
-				player.jump (); 
+
+				player.jump ();
+				for (int i = 0; i < net.HiddenLayers.Count; i++)
+				{
+					for (int j = 0; j < net.HiddenLayers[i].Count; j++)
+					{
+						csv.SaveDouble(net.HiddenLayers[i][j].Bias, "Bias: ",3);
+						csv.SaveDouble(net.HiddenLayers[i][j].Gradient, "Gradient: ",4);
+						csv.SaveDouble(net.HiddenLayers[i][j].Value, "Value: ", 5);
+					}
+				}
+
 			}
 		}
 	}
@@ -49,7 +63,7 @@ public class NetLayer : MonoBehaviour {
 		double[] v = {jumped};
 		dataSets.Add(new DataSet(C, v));
 		//this is where to pass in values for output
-		csv.Save(C);
+		csv.SaveDistance(C);
 		collectedDatasets++;
 		if (!trained && collectedDatasets == maxNumberOfDatasets) {
 			print ("Start training of the network."); 
